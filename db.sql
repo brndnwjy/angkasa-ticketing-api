@@ -13,8 +13,8 @@ CREATE TABLE users (
     postcode VARCHAR(16),
     password VARCHAR(64) NOT NULL,
     avatar VARCHAR,
-    created_at TIMESTAMP,
-    updated_at TIMESTAMP
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ
 );
 
 INSERT INTO users (user_id, username, email, phone, city, address, postcode, password)
@@ -27,8 +27,8 @@ CREATE TABLE admins (
     username VARCHAR(64) NOT NULL,
     email VARCHAR (64) NOT NULL UNIQUE,
     password VARCHAR(64) NOT NULL, 
-    created_at TIMESTAMP,
-    updated_at TIMESTAMP
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ
 );
 
 
@@ -36,7 +36,9 @@ CREATE TABLE admins (
 CREATE TABLE airlines (
     airline_id UUID PRIMARY KEY NOT NULL,
     name VARCHAR (256),
-    logo VARCHAR
+    logo VARCHAR,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ
 );
 
 INSERT INTO airlines (airline_id, name)
@@ -59,8 +61,8 @@ CREATE TABLE IF NOT EXISTS flights (
     wifi BOOLEAN NOT NULL,
     luggage BOOLEAN NOT NULL,
     lunch BOOLEAN NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT Now(),
-    updated_at TIMESTAMP
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ
 );
 
 INSERT INTO flights (flight_id, arrival_country, arrival_city, departure_country, departure_city,
@@ -83,6 +85,6 @@ CREATE TABLE IF NOT EXISTS bookings (
     travel_insurance BOOLEAN DEFAULT false,
     payment_status BOOLEAN DEFAULT false,
     total_payment INTEGER,
-    created_at TIMESTAMP NOT NULL DEFAULT Now(),
-    updated_at TIMESTAMP
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ
 );
