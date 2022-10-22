@@ -1,0 +1,134 @@
+{
+	"info": {
+		"_postman_id": "9ef9d9a5-e58f-4ff7-9afb-7bad0dc823c2",
+		"name": "angkasa",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16296782"
+	},
+	"item": [
+		{
+			"name": "flights",
+			"item": [
+				{
+					"name": "test",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/v1/flight",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"flight"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Flight Lists",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/v1/flight/list",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"flight",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Flight Insert",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n            \"arrival_country\": \"Indonesia\",\r\n            \"arrival_city\": \"Jakarta\",\r\n            \"departure_country\": \"Singapura\",\r\n            \"departure_city\": \"Changi\",\r\n            \"arrival_time\": \"07:00\",\r\n            \"departure_time\": \"09:00\",\r\n            \"price\": \"950000\",\r\n            \"terminal\": \"Sukarno Hatta\",\r\n            \"gate\": \"5\",\r\n            \"wifi\": false,\r\n            \"baggage\": true,\r\n            \"lunch\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/v1/flight/insert",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"flight",
+								"insert"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Flight Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n            \"arrival_country\": \"Amerika\",\r\n            \"arrival_city\": \"New York\",\r\n            \"departure_country\": \"Indonesia\",\r\n            \"departure_city\": \"Depok\",\r\n            \"arrival_time\": \"09:00\",\r\n            \"departure_time\": \"14:00\",\r\n            \"price\": \"750000\",\r\n            \"terminal\": \"Halim\",\r\n            \"gate\": \"1\",\r\n            \"wifi\": true,\r\n            \"baggage\": false,\r\n            \"lunch\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/v1/flight/update/6e0fed39-cf38-437a-837b-3a684bc4011b",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"flight",
+								"update",
+								"6e0fed39-cf38-437a-837b-3a684bc4011b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Flight Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/v1/flight/delete/8519b206-f044-455c-ba21-6cc265adf991",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"flight",
+								"delete",
+								"8519b206-f044-455c-ba21-6cc265adf991"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

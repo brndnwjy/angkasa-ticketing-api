@@ -10,8 +10,8 @@ CREATE TABLE users (
     postcode VARCHAR(16),
     password VARCHAR(64) NOT NULL,
     avatar VARCHAR,
-    created_at TIMESTAMP,
-    updated_at TIMESTAMP
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ
 );
 
 CREATE TABLE admins (
@@ -19,14 +19,16 @@ CREATE TABLE admins (
     username VARCHAR(64) NOT NULL,
     email VARCHAR (64) NOT NULL UNIQUE,
     password VARCHAR(64) NOT NULL, 
-    created_at TIMESTAMP,
-    updated_at TIMESTAMP
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ
 );
 
 CREATE TABLE airlines (
     airline_id UUID PRIMARY KEY NOT NULL,
     name VARCHAR (256),
-    logo VARCHAR
+    logo VARCHAR,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ
 );
 
 CREATE TABLE IF NOT EXISTS flights (
@@ -44,8 +46,8 @@ CREATE TABLE IF NOT EXISTS flights (
     wifi BOOLEAN NOT NULL,
     bagasi BOOLEAN NOT NULL,
     lunch BOOLEAN NOT NULL,
-    created_at TIMESTAMP WITH TIMEZONE NOT NULL DEFAULT now(),
-    updated_at TIMESTAMP WITH TIMEZONE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ
 );
 
 CREATE TABLE IF NOT EXISTS bookings (
@@ -53,6 +55,22 @@ CREATE TABLE IF NOT EXISTS bookings (
     user_id UUID REFERENCES users(user_id),
     flight_id UUID REFERENCES flights(flight_id),
     status VARCHAR NOT NULL,
-    created_at TIMESTAMP WITH TIMEZONE NOT NULL DEFAULT now(),
-    updated_at TIMESTAMP WITH TIMEZONE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ
 );
+
+----------------------notes------------------------
+to insert manual uuid in cli u can use this syntax
+gen_random_uuid()
+		------------------	
+
+----------------------notes------------------------
+
+INSERT EXAMPLE
+
+INSERT INTO flights (
+flight_id, arrival_country, arrival_city, departure_country, departure_city,
+arrival_time, departure_time, price, airline_id, terminal, gate, wifi, bagasi, lunch )
+VALUES
+(gen_random_uuid(), 'Indonesia', 'Jakarta', 'Malaysia', 'Kuala Lumpur', '15:00', '19:00',
+'1500000', gen_random_uuid(), 'Sukarno Hatta', '3', 'true','true','true');

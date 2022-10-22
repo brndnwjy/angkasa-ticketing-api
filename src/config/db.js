@@ -7,4 +7,11 @@ const pool = new Pool({
   port: process.env.DB_PORT
 });
 
+pool.connect((err) => {
+  if(err){
+    console.log(err);
+  }
+  console.log('database connected')
+})
+
 module.exports = pool;
