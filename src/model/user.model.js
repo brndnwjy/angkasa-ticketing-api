@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-// const uuid = require("uuid");
+const uuid = require("uuid");
 const pool = require("../config/db");
 const userModel = {
   // router list
@@ -52,58 +52,58 @@ const userModel = {
     avatar
   ) => {
     return new Promise((resolve, reject) => {
-    // const user_id = uuid.v4();
-    // const query = {
-    //     text: `INSERT INTO users
-    //             (   
-    //                 user_id,
-    //                 username,
-    //                 email,
-    //                 phone,
-    //                 city,
-    //                 address,
-    //                 postcode,
-    //                 password,
-    //                 avatar,
-    //             )
-    //             VALUES (
-    //                 $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
-    //             )`,
-    //     values: [
-    //         user_id,
-    //         username,
-    //         email,
-    //         phone,
-    //         city,
-    //         address,
-    //         postcode,
-    //         password,
-    //         avatar,
-    //         role
-    //     ]
-    // };
-    // pool.query(query, (err, res) => {
-    //     if (err) {
-    //         reject(err);
-    //     }
-    //     resolve(res);
-    // });
-      pool.query(
-        `
-            INSERT INTO users ( username, email, phone, city, address, postcode, password, avatar)
-            VALUES
-            ('${username}','${email}','${phone}','${city}' ,'${address}','${postcode}','${password}','${avatar}')
-            `,
-        (err, res) => {
-          if (err) {
+    const user_id = uuid.v4();
+    const query = {
+        text: `INSERT INTO users
+                (   
+                    user_id,
+                    username,
+                    email,
+                    phone,
+                    city,
+                    address,
+                    postcode,
+                    password,
+                    avatar,
+                )
+                VALUES (
+                    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
+                )`,
+        values: [
+            user_id,
+            username,
+            email,
+            phone,
+            city,
+            address,
+            postcode,
+            password,
+            avatar
+        ]
+    };
+    pool.query(query, (err, res) => {
+        if (err) {
             reject(err);
-          }
-          resolve(res);
         }
-      );
+        resolve(res);
+    });
+      // pool.query(
+      //   `
+      //       INSERT INTO users ( username, email, phone, city, address, postcode, password, avatar)
+      //       VALUES
+      //       ('${username}','${email}','${phone}','${city}' ,'${address}','${postcode}','${password}','${avatar}')
+      //       `,
+      //   (err, res) => {
+      //     if (err) {
+      //       reject(err);
+      //     }
+      //     resolve(res);
+      //   }
+      // );
     });
   },
-  register: ({ username,
+  register: ({
+    username,
     email,
     phone,
     city,
@@ -112,17 +112,51 @@ const userModel = {
     password,
     }) => {
     return new Promise((resolve, reject) => {
-      pool.query(
-        `insert into users (username,email, phone, city, address,postcode,password) 
-        values
-        ('${username}','${email}','${phone}','${city}','${address}','${postcode}','${password}')`,
-        (err, res) => {
-          if (err) {
+      const user_id = uuid.v4();
+      const query = {
+        text: `INSERT INTO users
+                (   
+                    user_id,
+                    username,
+                    email,
+                    phone,
+                    city,
+                    address,
+                    postcode,
+                    password
+                )
+                VALUES (
+                    $1, $2, $3, $4, $5, $6, $7, $8
+                )`,
+        values: [
+            user_id,
+            username,
+            email,
+            phone,
+            city,
+            address,
+            postcode,
+            password,
+            
+        ]
+    };
+    pool.query(query, (err, res) => {
+        if (err) {
             reject(err);
-          }
-          resolve(res);
         }
-      );
+        resolve(res);
+    });
+      // pool.query(
+      //   `insert into users (username,email, phone, city, address,postcode,password) 
+      //   values
+      //   ('${username}','${email}','${phone}','${city}','${address}','${postcode}','${password}')`,
+      //   (err, res) => {
+      //     if (err) {
+      //       reject(err);
+      //     }
+      //     resolve(res);
+      //   }
+      // );
     });
   },
   checkUsername: (username) => {
