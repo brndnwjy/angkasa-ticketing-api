@@ -9,6 +9,7 @@ const createError = require("http-errors");
 const path = require("path");
 
 const main = require("./src/router/index.routes");
+// const userRouter = require("./src/router/user.routes");
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -29,6 +30,7 @@ app.use(
 );
 
 app.use("/v1", main);
+// app.use(userRouter);
 
 app.use("/img", express.static(path.join(__dirname, "/upload")));
 
