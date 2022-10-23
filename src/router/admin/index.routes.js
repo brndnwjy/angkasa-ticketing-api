@@ -7,7 +7,7 @@ const flightRoutes = require("./flight.routes");
 const bookingRoutes = require("./booking.routes");
 
 router
-  .use("/admin", adminRoutes)
+  .use("/auth", adminRoutes)
   .use("/airline", airlineRoutes)
   .use("/flight", flightRoutes)
   .use("/booking", bookingRoutes);
