@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 const { v4: uuidv4 } = require("uuid");
-const userModel = require("../../models/user.model");
+const userModel = require("../../model/user.model");
 const { failed, success,succesWithToken } = require("../../helper/response.helper");
 const bcrypt = require("bcryptjs");
 const jwtToken = require("../../helper/auth.helper");

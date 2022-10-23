@@ -1,5 +1,5 @@
 const fs = require("fs");
-const recipeModel = require("../models/user.model");
+const recipeModel = require("../model/user.model");
 
 const removeRecipe = async (req, res, next) => {
   const id = req.params.user_id;
