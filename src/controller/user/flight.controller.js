@@ -129,13 +129,13 @@ const flightModelController = {
     //    }).catch((err) => {
     //         res.json(err)
     //    })
-
-    // const search = 'depok';
-    // const sortBy = 'flight_id';
-    const search = req.query.search || "";
-    const sortBy = req.query.sortby || "arrival_country";
+    const field = 'arrival_city';
+    const value = 'bandung';
+    const sortBy = 'flight_id';
+    // const search = req.query.search || "";
+    // const sortBy = req.query.sortby || "arrival_country";
     flightModel
-      .flightWithFilter(search, sortBy)
+      .flightWithFilter(field, value, sortBy)
       .then((results) => {
         res.json(results);
       })

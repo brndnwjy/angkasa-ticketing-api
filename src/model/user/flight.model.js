@@ -147,25 +147,13 @@ const flightModel = {
     });
   },
   
-  flightWithFilter: (search, sortBy) => {
-    // flightWithFilter: () => {
-    // return new Promise((resolve, reject) => {
-    //     const query = {
-    //         text: `SELECT * from flights where $1 ilike $2`,
-    //         values: [ search,`%${sortBy}%`, sortOrder]
-    //     }
-    //     db.query(query, (err, res) => {
-    //         if (err) {
-    //             reject(err);
-    //         }
-    //         resolve(res);
-    //     });
-    // });
-    console.log(sortBy);
+  flightWithFilter: (field, value, sortBy) => {
+    console.log(field + ', ' + value + ', ' + sortBy);
     return new Promise((resolve, reject) => {
+      
       const query = {
-        text: "SELECT * FROM flights WHERE departure_city ILIKE $1 ORDER BY $2",
-        values: [`%${search}%`, sortBy],
+        text: `SELECT * FROM flights WHERE ${field} ILIKE '%${value}%' ORDER BY ${sortBy} ASC`,
+        
       };
       pool.query(query, (err, res) => {
         if (err) {
