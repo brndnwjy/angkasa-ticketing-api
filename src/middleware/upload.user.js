@@ -17,11 +17,11 @@ const multerUpload = multer ({
     fileFilter: (req, file, cb) => {
         const ext = path.extname(file.originalname);
         console.log(ext);
-        if(ext === ".jpg" || ext === ".png") {
+        if(ext.toLowerCase() === ".jpg" || ext.toLowerCase() === ".png" || ext.toLowerCase() === ".jpeg") {
             cb(null, true);
         }else{
             const error = {
-                message: "File musts be jpg or png"
+                message: "Format image must be jpg, png, or jpeg",
             };
             cb(error, false);
         }

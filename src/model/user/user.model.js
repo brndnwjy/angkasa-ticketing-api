@@ -14,10 +14,10 @@ const userModel = {
       });
     });
   },
-  selectDetail: (user_id) => {
+  selectDetail: (id) => {
     return new Promise((resolve, reject) => {
       pool.query(
-        `SELECT * FROM users where user_id=${user_id}`,
+        `SELECT * FROM users where user_id='${id}'`,
         (err, result) => {
           if (err) {
             reject(err);
@@ -30,7 +30,7 @@ const userModel = {
   nameDetail: (username) => {
     return new Promise((resolve, reject) => {
       pool.query(
-        `select * from users where username='${username}'`,
+        `SELECT * FROM users WHERE  username ILIKE '%${username}%'`,
         (err, result) => {
           if (err) {
             reject(err);

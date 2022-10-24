@@ -4,7 +4,6 @@ const {
   listUser,
   destroy,
   detailUser,
-  insert,
   update,
   detailName,
   register,
@@ -18,11 +17,10 @@ const router = express.Router();
 
 router
   .get("/", listUser)
-  .get("/user/:id", detailUser)
-  .get("/user/name/:username", detailName)
-  .post("/user/", upload, insert)
-  .put("/user/:user_id", remove, upload, update)
+  .get("/:id", detailUser)
+  .get("/name/:username", detailNamegit s)
   .delete("/user/:user_id", remove, destroy)
-  .post("/Register", upload, register)
-  .post("/Login", login);
+  .post("/login", login)
+  .post("/register", upload, register)
+  .put("/update/:user_id", remove, upload, update);
 module.exports = router;

@@ -20,14 +20,15 @@ const userController = {
   },
   detailUser: (req, res) => {
     const id = req.params.id;
+    console.log(id)
     userModel
       .selectDetail(id)
       .then((result) => {
-        success(res, result, "success", "by id user success");
+        success(res, result, "success", "request by id user success");
       })
       .catch((err) => {
         // res.json(err)
-        failed(res, err.message, "failed", "by id user failed");
+        failed(res, err.message, "failed", "request by id user failed");
       });
   },
   detailName: (req, res) => {
@@ -36,30 +37,6 @@ const userController = {
       .nameDetail(name)
       .then((result) => {
         res.json(result);
-      })
-      .catch((err) => {
-        res.json(err);
-      });
-  },
-  insert: (req, res) => {
-    // const user_id = uuidv4();
-    // eslint-disable-next-line camelcase
-    const avatar = req.file.filename;
-    const { username, email, phone, city, address, postcode, password } =
-      req.body;
-    userModel
-      .store(
-        username,
-        email,
-        phone,
-        city,
-        address,
-        postcode,
-        password,
-        avatar
-      )
-      .then((result) => {
-        res.json("Account added successfully");
       })
       .catch((err) => {
         res.json(err);
@@ -137,10 +114,10 @@ const userController = {
         userModel
           .register(data)
           .then((result) => {
-            success(res, result, "success", "register success");
+            success(res, result, "success", "register user success");
           })
           .catch((err) => {
-            failed(res, err.message, "failed", "register fail");
+            failed(res, err.message, "failed", "register user fail");
           });
       });
     } catch (err) {
