@@ -129,9 +129,9 @@ const flightModelController = {
     //    }).catch((err) => {
     //         res.json(err)
     //    })
-    const field = 'arrival_city';
-    const value = 'bandung';
-    const sortBy = 'flight_id';
+    const field = req.query.field || "arrival_city";
+    const value = req.query.value || '';
+    const sortBy = req.query.sortby || 'created_at';
     // const search = req.query.search || "";
     // const sortBy = req.query.sortby || "arrival_country";
     flightModel
