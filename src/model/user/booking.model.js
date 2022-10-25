@@ -2,37 +2,48 @@ const pool = require("../../config/db");
 
 const bookingModel = {
   createBooking: (data) => {
-    console.log("berhasil masuk model")
-    console.log(data.total);
     return pool.query(
       `
-        INSERT INTO bookings (booking_id, user_id, flight_id, passenger_name, passenger_title, passenger_nationality, travel_insurance, total_payment) 
+        INSERT INTO bookings (booking_id, user_id, flight_id, psg_name, psg_title, psg_nationality, travel_insurance, total_payment) 
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8);
         `,
       [
         data.booking_id,
         data.user_id,
         data.flight_id,
-        data.passenger_name,
-        data.passenger_title,
-        data.passenger_nationality,
+        data.psg_name,
+        data.psg_title,
+        data.psg_nationality,
         data.travel_insurance,
         data.total,
       ]
     );
   },
 
-  getAllBooking: () => {
-    return pool.query("SELECT * FROM bookings");
+  getBooking: () => {
+    return pool.query(`SELECT bookings.*, flights.*, airlines.* FROM bookings 
+    JOIN (flights join airlines using (airline_id)) using (flight_id)`);
+  },
+
+  getMyBooking: (id) => {
+    return pool.query(`
+    SELECT bookings.*, flights.*, airlines.*, users.* FROM bookings 
+    JOIN (flights join airlines using (airline_id)) using (flight_id) 
+    JOIN users USING (user_id) WHERE user_id = '${id}'`);
   },
 
   getBookingDetail: (id) => {
-    return pool.query(`SELECT * FROM bookings WHERE booking_id = '${id}'`);
+    return pool.query(`
+    SELECT bookings.*, flights.*, airlines.*, users.* FROM bookings 
+    JOIN (flights join airlines using (airline_id)) using (flight_id)
+    JOIN users using (user_id) WHERE booking_id = '${id}'
+    `);
   },
 
-  updateBooking: (id) => {
+  updateBooking: (id, date) => {
     return pool.query(
-      `UPDATE bookings SET payment_status = true WHERE booking_id = '${id}'`
+      "UPDATE bookings SET payment_status = true, updated_at = $1 WHERE booking_id = $2",
+      [date, id]
     );
   },
 

@@ -1,16 +1,19 @@
 const express = require("express");
+const router = express.Router();
 const {
-  getAllBooking,
+  getBooking,
+  getMyBooking,
   getBookingDetail,
   createBooking,
   updateBooking,
   cancelBooking,
 } = require("../controller/user/booking.controller");
-const router = express.Router();
+const jwtAuth = require("../middleware/auth.middleware");
 
 router
-  .get("/", getAllBooking)
-  .get("/:id", getBookingDetail)
+  .get("/", jwtAuth, getBooking)
+  .get("/my", jwtAuth, getMyBooking)
+  .get("/:id", jwtAuth, getBookingDetail)
   .post("/", createBooking)
   .put("/:id", updateBooking)
   .delete("/:id", cancelBooking);

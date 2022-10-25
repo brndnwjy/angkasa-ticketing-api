@@ -1,12 +1,54 @@
 const pool = require("../../config/db");
 
-const uuid = require("uuid");
-
 const flightModel = {
-  listFlight: () => {
+  getFlight: (data) => {
+    return new Promise((resolve, reject) => {
+      let query = {
+        text: `
+        SELECT * FROM flights WHERE 
+        departure_country ILIKE '%${data.dept_country}%'
+        AND departure_city ILIKE '%${data.dept_city}%'
+        AND arrival_country ILIKE '%${data.arrv_country}%'
+        AND arrival_city ILIKE '%${data.arrv_city}%'
+        AND (price >= ${data.min_price} AND price <= ${data.max_price})
+        `,
+      };
+
+      if (data.transit) {
+        query.text = query.text + " " + `AND transit = ${data.transit}`;
+      }
+
+      if (data.wifi) {
+        query.text = query.text + " " + ` AND wifi = ${data.wifi}`;
+        console.log("nambah wifi");
+        console.log(query);
+      }
+
+      if (data.lunch) {
+        query.text = query.text + " " + ` AND lunch = ${data.lunch}`;
+        console.log("nambah lunch");
+        console.log(query);
+      }
+
+      if (data.luggage) {
+        query.text = query.text + " " + ` AND luggage = ${data.luggage}`;
+      }
+
+      pool.query(query, (err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(res);
+      });
+    });
+  },
+  
+  getFlightDetail: (id) => {
     return new Promise((resolve, reject) => {
       const query = {
-        text: "SELECT * FROM flights",
+        text: `
+        SELECT flights.*, airlines.* FROM flights JOIN airlines USING (airline_id) WHERE flight_id = '${id}'
+        `,
       };
       pool.query(query, (err, res) => {
         if (err) {
@@ -17,25 +59,8 @@ const flightModel = {
     });
   },
 
-  insertFlight: ({
-    arrival_country,
-    arrival_city,
-    departure_country,
-    departure_city,
-    arrival_time,
-    departure_time,
-    price,
-    terminal,
-    gate,
-    wifi,
-    luggage,
-    lunch,
-  }) => {
+  insertFlight: (data) => {
     return new Promise((resolve, reject) => {
-      // const flight_id = uuid(uuidBytes);
-      // return (console.log(flight_id))
-      const flight_id = uuid.v4();
-      console.log(typeof flight_id);
       const query = {
         text: `INSERT INTO flights
                         (   
@@ -43,25 +68,26 @@ const flightModel = {
                             arrival_country, arrival_city, 
                             departure_country, departure_city,
                             arrival_time, departure_time, price, 
-                            terminal, gate, wifi, luggage, lunch
+                            terminal, gate, transit, wifi, luggage, lunch
                         )
                         VALUES (
-                            $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13
+                            $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14
                         )`,
         values: [
-          flight_id,
-          arrival_country,
-          arrival_city,
-          departure_country,
-          departure_city,
-          arrival_time,
-          departure_time,
-          price,
-          terminal,
-          gate,
-          wifi,
-          luggage,
-          lunch,
+          data.id,
+          data.arrival_country,
+          data.arrival_city,
+          data.departure_country,
+          data.departure_city,
+          data.arrival_time,
+          data.departure_time,
+          data.price,
+          data.terminal,
+          data.gate,
+          data.transit,
+          data.wifi,
+          data.luggage,
+          data.lunch,
         ],
       };
       pool.query(query, (err, res) => {
@@ -73,23 +99,8 @@ const flightModel = {
     });
   },
 
-  updateFlight: ({
-    flight_id,
-    arrival_country,
-    arrival_city,
-    departure_country,
-    departure_city,
-    arrival_time,
-    departure_time,
-    price,
-    terminal,
-    gate,
-    wifi,
-    luggage,
-    lunch,
-  }) => {
+  updateFlight: (data) => {
     return new Promise((resolve, reject) => {
-      const updated_at = "now()";
       const query = {
         text: `UPDATE flights SET
                     arrival_country = COALESCE($1, arrival_country),
@@ -101,26 +112,30 @@ const flightModel = {
                     price = COALESCE($7, price),
                     terminal = COALESCE($8, terminal),
                     gate = COALESCE($9, gate),
-                    wifi = COALESCE($10, wifi),
-                    luggage = COALESCE($11, luggage),
-                    lunch = COALESCE($12, lunch),
-                    updated_at = $13
-                    WHERE flight_id = $14`,
+                    transit = COALESCE($10, transit),
+                    wifi = COALESCE($11, wifi),
+                    luggage = COALESCE($12, luggage),
+                    lunch = COALESCE($13, lunch),
+                    airline_id = COALESCE($14, airline_id),
+                    updated_at = $15
+                    WHERE flight_id = $16`,
         values: [
-          arrival_country,
-          arrival_city,
-          departure_country,
-          departure_city,
-          arrival_time,
-          departure_time,
-          price,
-          terminal,
-          gate,
-          wifi,
-          luggage,
-          lunch,
-          updated_at,
-          flight_id,
+          data.arrival_country,
+          data.arrival_city,
+          data.departure_country,
+          data.departure_city,
+          data.arrival_time,
+          data.departure_time,
+          data.price,
+          data.terminal,
+          data.gate,
+          data.transit,
+          data.wifi,
+          data.luggage,
+          data.lunch,
+          data.airline_id,
+          data.date,
+          data.id,
         ],
       };
       pool.query(query, (err, res) => {
@@ -132,11 +147,11 @@ const flightModel = {
     });
   },
 
-  deleteFlight: (flight_id) => {
+  deleteFlight: (id) => {
     return new Promise((resolve, reject) => {
       const query = {
         text: "DELETE FROM flights WHERE flight_id = $1",
-        values: [flight_id],
+        values: [id],
       };
       pool.query(query, (err, res) => {
         if (err) {
@@ -145,24 +160,7 @@ const flightModel = {
         resolve(res);
       });
     });
-  },
-  
-  flightWithFilter: (field, value, sortBy) => {
-    console.log(field + ', ' + value + ', ' + sortBy);
-    return new Promise((resolve, reject) => {
-      
-      const query = {
-        text: `SELECT * FROM flights WHERE ${field} ILIKE '%${value}%' ORDER BY ${sortBy} ASC`,
-        
-      };
-      pool.query(query, (err, res) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(res);
-      });
-    });
-  },
+  },  
 };
 
 module.exports = flightModel;

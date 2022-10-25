@@ -1,70 +1,38 @@
-/* eslint-disable no-unused-vars */
-const { v4: uuidv4 } = require("uuid");
+const {
+  failed,
+  success,
+  succesWithToken,
+} = require("../../helper/response.helper");
 const userModel = require("../../model/user/user.model");
-const { failed, success, succesWithToken } = require("../../helper/response.helper");
+const { v4: uuid } = require("uuid");
 const bcrypt = require("bcryptjs");
 const jwtToken = require("../../helper/auth.helper");
 
 const userController = {
-  // method
-  listUser: (req, res) => {
-    userModel
-      .selectAll()
-      .then((result) => {
-        success(res, result, "success", "get all user succes");
-      })
-      .catch((err) => {
-        // res.json(err)
-        failed(res, err.message, "failed", "get all user failed");
-      });
-  },
-  detailUser: (req, res) => {
-    const id = req.params.id;
-    console.log(id)
-    userModel
-      .selectDetail(id)
-      .then((result) => {
-        success(res, result, "success", "request by id user success");
-      })
-      .catch((err) => {
-        // res.json(err)
-        failed(res, err.message, "failed", "request by id user failed");
-      });
-  },
-  detailName: (req, res) => {
-    const name = req.params.username;
-    userModel
-      .nameDetail(name)
-      .then((result) => {
-        res.json(result);
-      })
-      .catch((err) => {
-        res.json(err);
-      });
-  },
-
   register: (req, res) => {
     try {
       const { username, email, phone, password } = req.body;
+      const id = uuid();
 
-      console.log(username + " " + email + " " + phone + " " + password)
       bcrypt.hash(password, 10, (err, hash) => {
         if (err) {
           failed(res, err.message, "failed", "fail hash password");
         }
-        console.log("ini di controller")
+        console.log("ini di controller");
 
         const data = {
+          id,
           username,
           email,
           phone,
           password: hash,
         };
-        console.log(username + " " + email + " " + phone + " " + password)
+
         userModel
           .register(data)
-          .then((result) => {
-            success(res, result, "success", "register success");
+          .then(() => {
+            delete data.password;
+            success(res, data, "success", "register success");
           })
           .catch((err) => {
             failed(res, err.message, "failed", "register fail");
@@ -74,88 +42,116 @@ const userController = {
       failed(res, err.message, "failed", "internal server error");
     }
   },
-  update: (req, res) => {
-    const user_id = req.params.id;
-    // eslint-disable-next-line camelcase
-    const {
-      username,
-      phone,
-      city,
-      address,
-      postcode, } = req.body;
-    const data = {
-      user_id,
-      username,
-      phone,
-      city,
-      address,
-      postcode,
-    };
+
+  login: async (req, res) => {
+    const { email, password } = req.body;
+
     userModel
-      .updateAccount(
-        user_id,
-        username,
-        phone,
-        city,
-        address,
-        postcode,
-      )
-      .then((results) => {
-        if (Object.keys(data).length >= 1) {
-          success(res, data, "success", "data has been update");
+      .checkEmail(email)
+      .then((result) => {
+        const user = result.rows[0];
+        if (result.rowCount > 0) {
+          bcrypt
+            .compare(password, result.rows[0].password)
+            .then(async (result) => {
+              if (result) {
+
+                const token = await jwtToken({
+                  id: user.user_id,
+                  email: user.email,
+                });
+                
+                delete user.password;
+                
+                succesWithToken(
+                  res,
+                  { token, data: user },
+                  "success",
+                  "login success"
+                );
+              } else {
+                // ketika password salah
+                failed(res, null, "failed", "email or password is wrong");
+              }
+            });
         } else {
-          failed(res, "failed", "failed to update data");
+          //ketika username salah
+          failed(res, null, "failed", "username wrong");
         }
       })
       .catch((err) => {
-        // res.json(err);
-        failed(res, err.message, "failed", "internal server error");
+        failed(res, err, "failed", "internal server error");
       });
   },
-  deleteUser: (req, res) => {
-    const user_id = req.params.id;
+
+  getUser: (req, res) => {
     userModel
-      .deleteUser(user_id)
-      .then(() => {
-        console.log('success')
-        success(res, "success", "data has been deleted");
+      .getUser()
+      .then((result) => {
+        success(res, result.rows, "success", "get all user succes");
       })
       .catch((err) => {
-        console.log('gagal')
+        // res.json(err)
+        failed(res, err.message, "failed", "get all user failed");
+      });
+  },
+
+  getUserDetail: (req, res) => {
+    const id = req.params.id;
+
+    userModel
+      .getUserDetail(id)
+      .then((result) => {
+        success(res, result.rows[0], "success", "request by id user success");
+      })
+      .catch((err) => {
+        // res.json(err)
+        failed(res, err.message, "failed", "request by id user failed");
+      });
+  },
+
+  updateUser: (req, res) => {
+    const id = req.params.id;
+    const date = new Date();
+    let avatar;
+
+    if (req.file) {
+      avatar = req.file.filename;
+    }
+
+    const data = {
+      id,
+      date,
+      username: req.body.username,
+      email: req.body.email,
+      phone: req.body.phone,
+      city: req.body.city,
+      address: req.body.address,
+      postcode: req.body.postcode,
+    };
+    userModel
+      .updateUser(data, avatar)
+      .then(async () => {
+        const result = await userModel.getUserDetail(id);
+        success(res, result.rows[0], "success", "data has been update");
+      })
+      .catch((err) => {
         failed(res, err.message, "failed", "internal server error");
       });
   },
-  login: async (req, res) => {
-    const { email, password } = req.body;
-    console.log(email +" "+ password)
-    userModel.checkUEmail(email)
-    .then((result) => {
-      // console.log(res.rows[0]);
-      const user = result.rows[0];
-      console.log(user)
-      if (result.rowCount > 0) {
-        bcrypt.compare(password, result.rows[0].password).then(async (result) => {
-          if (result) {
-            const token = await jwtToken({
-              email: user.email,
-              level: user.level
-            });
-            // console.log(token);
-            // delete
-            succesWithToken(res, { token, data: user }, "success", "login success");
-          } else {
-            // ketika password salah
-            failed(res, null, "failed", "email or password is wrong");
-          }
-        });
-      } else {
-        //ketika username salah
-        failed(res, null, "failed", "username wrong");
-      }
-    }).catch((err) => {
-      failed(res, err, "failed", "internal server error");
-    });
-  }
+
+  deleteUser: async (req, res) => {
+    const id = req.params.id;
+    const data = await userModel.getUserDetail(id);
+    userModel
+      .deleteUser(id)
+      .then(() => {
+        success(res, data.rows[0], "data has been deleted");
+      })
+      .catch((err) => {
+        failed(res, err.message, "failed", "internal server error");
+      });
+  },
 };
 
 module.exports = userController;

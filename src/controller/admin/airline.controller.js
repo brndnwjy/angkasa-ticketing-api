@@ -1,5 +1,6 @@
 const createError = require("http-errors");
 const { v4: uuid } = require("uuid");
+const { success } = require("../../helper/response.helper");
 
 const airlineModel = require("../../model/admin/airline.model");
 
@@ -7,29 +8,23 @@ const airlineController = {
   insertAirline: async (req, res, next) => {
     try {
       const id = uuid();
-      const logo = req.file.filename;
       const { name } = req.body;
+      const logo = req.file.filename;
 
       await airlineModel.insertAirline(id, logo, name);
 
-      return res.json({
-        msg: "new airline added",
-        data: { id, logo, name },
-      });
+      success(res, { id, name, logo }, "success", "insert airline success");
     } catch (error) {
       console.log(error);
       next(new createError.InternalServerError());
     }
   },
 
-  getAllAirline: async (req, res, next) => {
+  getAirline: async (req, res, next) => {
     try {
-      const data = await airlineModel.getAllAirline();
+      const data = await airlineModel.getAirline();
 
-      return res.json({
-        msg: "get all airlines",
-        data: data.rows,
-      });
+      success(res, data.rows, "success", "get all airline success");
     } catch (error) {
       console.log(error);
       next(new createError.InternalServerError());
@@ -42,10 +37,7 @@ const airlineController = {
 
       const data = await airlineModel.getAirlineDetail(id);
 
-      return res.json({
-        msg: `get airline with id : ${id}`,
-        data: data.rows[0],
-      });
+      success(res, data.rows[0], "success", "get airline detail success");
     } catch (error) {
       console.log(error);
       next(new createError.InternalServerError());
@@ -55,17 +47,26 @@ const airlineController = {
   updateAirline: async (req, res, next) => {
     try {
       const { id } = req.params;
-      const logo = req.file.filename;
       const { name } = req.body;
+      let logo;
+      const date = new Date();
+
+      if (req.file) {
+        logo = req.file.filename;
+      }
 
       const data = await airlineModel.getAirlineDetail(id);
       const oldName = data.rows[0].name;
 
-      await airlineModel.updateAirline(id, logo, name);
+      await airlineModel.updateAirline(id, logo, name, date);
+      const result = await airlineModel.getAirlineDetail(id);
 
-      return res.json({
-        msg: `${oldName} airline updated to ${name}`,
-      });
+      success(
+        res,
+        result.rows[0],
+        "success",
+        `${oldName} updated to ${result.rows[0].name}`
+      );
     } catch (error) {
       console.log(error);
       next(new createError.InternalServerError());
@@ -80,9 +81,8 @@ const airlineController = {
 
       await airlineModel.removeAirline(id);
 
-      return res.json({
-        msg: `${name} airline removed from system`,
-      });
+      success(res, data.rows[0], "success", `${name} deleted`);
+
     } catch (error) {
       console.log(error);
       next(new createError.InternalServerError());

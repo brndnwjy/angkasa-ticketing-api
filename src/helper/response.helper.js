@@ -18,10 +18,10 @@ module.exports = {
     });
   },
 
-  succesWithToken: (res, token, status, message) => {
+  succesWithToken: (res, data, status, message) => {
     res.json({
       status,
-      token,
+      data,
       message,
     });
   },

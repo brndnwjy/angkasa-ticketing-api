@@ -1,5 +1,6 @@
 const createError = require("http-errors");
 const { v4: uuid } = require("uuid");
+const { success } = require("../../helper/response.helper");
 
 const bookingModel = require("../../model/user/booking.model");
 
@@ -7,75 +8,52 @@ const bookingController = {
   createBooking: async (req, res, next) => {
     try {
       const id = uuid();
-      
-      const {
-        user_id,
-        flight_id,
-        passenger_title,
-        passenger_name,
-        passenger_nationality,
-        travel_insurance,
-        total,
-      } = req.body;
-
-      console.log(typeof travel_insurance);
-      console.log(typeof total);
-      
 
       const bookingData = {
         booking_id: id,
-        user_id,
-        flight_id,
-        passenger_title,
-        passenger_name,
-        passenger_nationality,
-        travel_insurance,
-        total,
+        user_id: req.body.user_id,
+        flight_id: req.body.flight_id,
+        psg_title: req.body.psg_title,
+        psg_name: req.body.psg_name,
+        psg_nationality: req.body.psg_nationality,
+        travel_insurance: req.body.travel_insurance,
+        total: req.body.total,
       };
 
       console.log(bookingData);
 
       await bookingModel.createBooking(bookingData);
 
-      return res.json({
-        msg: "ticket booked",
-        data: bookingData,
-      });
+      success(res, bookingData, "success", "booking success");
     } catch (error) {
       console.log(error);
       next(new createError.InternalServerError());
     }
   },
 
-  getAllBooking: async (req, res, next) => {
+  getBooking: async (req, res, next) => {
     try {
-      const data = await bookingModel.getAllBooking();
+      const data = await bookingModel.getBooking();
       console.log(data.rows);
 
-      res.json({
-        msg: "get all bookings",
-        data: data.rows[0],
-      });
+      success(res, data.rows, "success", "get all booking success");
     } catch (error) {
       console.log(error);
       next(new createError.InternalServerError());
     }
   },
 
-  //   getMyBooking: async (req, res, next) => {
-  //     try {
-  //       const data = await bookingModel.getMyBooking();
-  //       console.log(data);
+  getMyBooking: async (req, res, next) => {
+    try {
+      const { id } = req.decoded;
+      const data = await bookingModel.getMyBooking(id);
 
-  //       res.json({
-  //         msg: "get my bookings",
-  //         data: data,
-  //       });
-  //     } catch (error) {
-  //       console.log(error);
-  //       next(new createError.InternalServerError());
-  //     }
-  //   },
+      success(res, data.rows, "success", "get my booking success");
+    } catch (error) {
+      console.log(error);
+      next(new createError.InternalServerError());
+    }
+  },
 
   getBookingDetail: async (req, res, next) => {
     try {
@@ -83,11 +61,9 @@ const bookingController = {
       console.log(id);
 
       const data = await bookingModel.getBookingDetail(id);
+      delete data.rows[0].password;
 
-      res.json({
-        msg: `get booking detail with id : ${id}`,
-        data: data.rows[0],
-      });
+      success(res, data.rows[0], "success", "get booking detail success");
     } catch (error) {
       console.log(error);
       next(new createError.InternalServerError());
@@ -97,12 +73,12 @@ const bookingController = {
   updateBooking: async (req, res, next) => {
     try {
       const { id } = req.params;
+      const date = new Date();
 
-      await bookingModel.updateBooking(id);
+      await bookingModel.updateBooking(id, date);
+      const result = await bookingModel.getBookingDetail(id);
 
-      res.json({
-        msg: `booking payment updated with id : ${id}`,
-      });
+      success(res, result.rows[0], "success", "update booking success");
     } catch (error) {
       console.log(error);
       next(new createError.InternalServerError());
@@ -113,11 +89,10 @@ const bookingController = {
     try {
       const { id } = req.params;
 
+      const data = await bookingModel.getBookingDetail(id);
       await bookingModel.cancelBooking(id);
 
-      res.json({
-        msg: `booking with id ${id} have been cancelled`,
-      });
+      success(res, data.rows[0], "success", "cancel booking success");
     } catch (error) {
       console.log(error);
       next(new createError.InternalServerError());

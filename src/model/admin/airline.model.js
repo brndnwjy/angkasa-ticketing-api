@@ -9,7 +9,7 @@ const airlineModel = {
     );
   },
 
-  getAllAirline: () => {
+  getAirline: () => {
     return pool.query("SELECT * FROM airlines");
   },
 
@@ -17,12 +17,11 @@ const airlineModel = {
     return pool.query(`SELECT * FROM airlines WHERE airline_id = '${id}'`);
   },
 
-  updateAirline: (id, logo, name) => {
-    return pool.query("UPDATE airlines SET logo = $1, name = $2 WHERE airline_id = $3", [
-      logo,
-      name,
-      id,
-    ]);
+  updateAirline: (id, logo, name, date) => {
+    return pool.query(
+      "UPDATE airlines SET logo = COALESCE ($1, logo), name = COALESCE ($2, name), updated_at = $3 WHERE airline_id = $4",
+      [logo, name, date, id]
+    );
   },
 
   removeAirline: (id) => {
