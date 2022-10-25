@@ -28,7 +28,7 @@ const flightModel = {
     terminal,
     gate,
     wifi,
-    baggage,
+    luggage,
     lunch,
   }) => {
     return new Promise((resolve, reject) => {
@@ -43,7 +43,7 @@ const flightModel = {
                             arrival_country, arrival_city, 
                             departure_country, departure_city,
                             arrival_time, departure_time, price, 
-                            terminal, gate, wifi, baggage, lunch
+                            terminal, gate, wifi, luggage, lunch
                         )
                         VALUES (
                             $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13
@@ -60,7 +60,7 @@ const flightModel = {
           terminal,
           gate,
           wifi,
-          baggage,
+          luggage,
           lunch,
         ],
       };
@@ -85,7 +85,7 @@ const flightModel = {
     terminal,
     gate,
     wifi,
-    baggage,
+    luggage,
     lunch,
   }) => {
     return new Promise((resolve, reject) => {
@@ -102,7 +102,7 @@ const flightModel = {
                     terminal = COALESCE($8, terminal),
                     gate = COALESCE($9, gate),
                     wifi = COALESCE($10, wifi),
-                    baggage = COALESCE($11, baggage),
+                    luggage = COALESCE($11, luggage),
                     lunch = COALESCE($12, lunch),
                     updated_at = $13
                     WHERE flight_id = $14`,
@@ -117,7 +117,7 @@ const flightModel = {
           terminal,
           gate,
           wifi,
-          baggage,
+          luggage,
           lunch,
           updated_at,
           flight_id,

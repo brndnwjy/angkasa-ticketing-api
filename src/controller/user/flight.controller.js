@@ -24,7 +24,7 @@ const flightModelController = {
       terminal,
       gate,
       wifi,
-      baggage,
+      luggage,
       lunch,
     } = req.body;
     const data = {
@@ -38,7 +38,7 @@ const flightModelController = {
       terminal,
       gate,
       wifi,
-      baggage,
+      luggage,
       lunch,
     };
 
@@ -70,7 +70,7 @@ const flightModelController = {
       terminal,
       gate,
       wifi,
-      baggage,
+      luggage,
       lunch,
     } = req.body;
 
@@ -85,7 +85,7 @@ const flightModelController = {
       terminal,
       gate,
       wifi,
-      baggage,
+      luggage,
       lunch,
       flight_id,
     };
