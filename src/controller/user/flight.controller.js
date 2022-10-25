@@ -117,27 +117,14 @@ const flightModelController = {
   },
 
   flightWithFilter: (req, res) => {
-    // const search = req.query.search || "";
-    // const sortBy = req.query.sortby || "flight_id";
-    // const sortOrder = req.query.order || "asc";
-    // console.log(search +" "+sortBy)
-    // flightModel
-    //     .flightWithFilter(search, sortBy, sortOrder)
-    //     .then((results) => {
-    //         // success(res, data, "success", "data has been update");
-    //         res.json(results);
-    //    }).catch((err) => {
-    //         res.json(err)
-    //    })
     const field = req.query.field || "arrival_city";
     const value = req.query.value || '';
     const sortBy = req.query.sortby || 'created_at';
-    // const search = req.query.search || "";
-    // const sortBy = req.query.sortby || "arrival_country";
     flightModel
       .flightWithFilter(field, value, sortBy)
       .then((results) => {
-        res.json(results);
+        // res.json(results);
+        success(res, results.rows , "success", "success get data");
       })
       .catch((err) => {
         // res.json(err);
