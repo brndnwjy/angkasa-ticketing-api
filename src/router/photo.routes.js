@@ -2,7 +2,7 @@ const express = require("express");
 
 const {
   listUser,
-  deleteUser,
+  destroy,
   detailUser,
   update,
   detailName,
@@ -17,10 +17,7 @@ const router = express.Router();
 
 router
   .get("/", listUser)
-  .get("/:id", detailUser)
-  .get("/name/:username", detailName)
-  .delete("/delete/:id", deleteUser)
-  .post("/login", login)
-  .post("/register", register)
-  .put("/update/:id", update);
+  .get("/:id", detailPhoto)
+  .post("/:id", upload, insertPhoto, isPhotoTrue)
+  .put("/update/:user_id", remove, upload, update);
 module.exports = router;

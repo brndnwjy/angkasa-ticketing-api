@@ -7,13 +7,14 @@ const airlineController = {
   insertAirline: async (req, res, next) => {
     try {
       const id = uuid();
+      const logo = req.file.filename;
       const { name } = req.body;
 
-      await airlineModel.insertAirline(id, name);
+      await airlineModel.insertAirline(id, logo, name);
 
       return res.json({
         msg: "new airline added",
-        data: { id, name },
+        data: { id, logo, name },
       });
     } catch (error) {
       console.log(error);

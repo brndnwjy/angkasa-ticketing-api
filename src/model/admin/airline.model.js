@@ -1,11 +1,11 @@
 const pool = require("../../config/db");
 
 const airlineModel = {
-  insertAirline: (id, name) => {
+  insertAirline: (id, logo, name) => {
     return pool.query(
-      `INSERT INTO airlines (airline_id, name)
-        VALUES ($1, $2)`,
-      [id, name]
+      `INSERT INTO airlines (airline_id, logo, name)
+        VALUES ($1, $2, $3)`,
+      [id, logo, name]
     );
   },
 

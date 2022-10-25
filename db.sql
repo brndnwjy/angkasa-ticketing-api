@@ -12,13 +12,30 @@ CREATE TABLE users (
     address VARCHAR,
     postcode VARCHAR(16),
     password VARCHAR(64) NOT NULL,
-    avatar VARCHAR,
+    isPhoto boolean DEFAULT false,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ
 );
 
+for update isphoto
+ by email
+update users set isphoto =  true where email = 'brandon@mail.com';
+ by id
+update users set isphoto =  true where user_id = '8b65d7af-91c2-478f-8655-ddaabeb3fa80';
+
+
 INSERT INTO users (user_id, username, email, phone, city, address, postcode, password)
 VALUES ('8b65d7af-91c2-478f-8655-ddaabeb3fa80', 'Brandon', 'brandon@mail.com', '08563344252537', 'Jakarta', 'Walet Street Number 100', '11800', 'password');
+
+CREATE TABLE photo_users (
+	photo_user_id UUID PRIMARY KEY NOT NULL,
+	user_id UUID REFERENCES users(user_id),
+	photo VARCHAR NOT NULL,
+	created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+); 
+
+
+
 
 
 -- Admins

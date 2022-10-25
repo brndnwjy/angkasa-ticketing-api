@@ -102,7 +102,12 @@ const userModel = {
       // );
     });
   },
-  register: ({ username, email, phone, city, address, postcode, password }) => {
+  register: ({
+    username,
+    email,
+    phone,
+    password
+  }) => {
     return new Promise((resolve, reject) => {
       const user_id = uuid.v4();
       const query = {
@@ -112,22 +117,16 @@ const userModel = {
                     username,
                     email,
                     phone,
-                    city,
-                    address,
-                    postcode,
                     password
                 )
                 VALUES (
-                    $1, $2, $3, $4, $5, $6, $7, $8
+                    $1, $2, $3, $4, $5
                 )`,
         values: [
           user_id,
           username,
           email,
           phone,
-          city,
-          address,
-          postcode,
           password,
         ],
       };
@@ -137,17 +136,6 @@ const userModel = {
         }
         resolve(res);
       });
-      // pool.query(
-      //   `insert into users (username,email, phone, city, address,postcode,password)
-      //   values
-      //   ('${username}','${email}','${phone}','${city}','${address}','${postcode}','${password}')`,
-      //   (err, res) => {
-      //     if (err) {
-      //       reject(err);
-      //     }
-      //     resolve(res);
-      //   }
-      // );
     });
   },
   checkUsername: (username) => {
@@ -166,36 +154,31 @@ const userModel = {
   updateAccount: (
     user_id,
     username,
-    email,
     phone,
     city,
     address,
     postcode,
-    password,
-    avatar
   ) => {
     return new Promise((resolve, reject) => {
+      const updated_at = 'now()';
       pool.query(
-        ` UPDATE users SET
+        `
+        UPDATE users SET
         username = COALESCE ($1, username),
-        email = COALESCE ($2, email),
-        phone = COALESCE ($3, phone),
-        city = COALESCE ($4, city),
-        address = COALESCE ($5, address),
-        postcode = COALESCE ($6, postcode),
-        password = COALESCE ($7, password),
-        avatar = COALESCE ($8, avatar) 
-        WHERE user_id = $9
+        phone = COALESCE ($2, phone),
+        city = COALESCE ($3, city),
+        address = COALESCE ($4, address),
+        postcode = COALESCE ($5, postcode),
+        updated_at = $6
+        WHERE user_id = $7
         `,
         [
           username,
-          email,
           phone,
           city,
           address,
           postcode,
-          password,
-          avatar,
+          updated_at,
           user_id,
         ],
         (err, res) => {
@@ -208,23 +191,24 @@ const userModel = {
     });
   },
 
-  delete: (user_id) => {
+  deleteUser: (user_id) => {
     return new Promise((resolve, reject) => {
-      pool.query(
-        `DELETE FROM users WHERE user_id = ${user_id};`,
-        (err, res) => {
-          if (err) {
-            reject(err);
-          }
-          resolve(res);
+      const query = {
+        text: "DELETE FROM users WHERE user_id = $1",
+        values: [user_id],
+      };
+      pool.query(query, (err, res) => {
+        if (err) {
+          reject(err);
         }
-      );
+        resolve(res);
+      });
     });
   },
   checkUEmail: (email) => {
     return new Promise((resolve, reject) => {
       pool.query(
-        `select * from users where email='${email}'`,
+        `SELECT * FROM users WHERE email='${email}'`,
         (err, result) => {
           if (err) {
             reject(err);
