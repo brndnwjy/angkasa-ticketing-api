@@ -4,6 +4,7 @@ const router = express.Router();
 
 // middleware
 const uploadAirline = require('../../middleware/upload.airline');
+const deleteAirline = require('../../middleware/delete.airline');
 
 
 // router.get("/", (req, res) => {
@@ -14,7 +15,7 @@ router
 .get("/", getAllAirline)
 .get("/:id", getAirlineDetail)
 .post("/", uploadAirline, insertAirline)
-.put("/:id", updateAirline)
-.delete("/:id", removeAirline);
+.put("/:id", deleteAirline, uploadAirline ,updateAirline)
+.delete("/:id",deleteAirline, removeAirline);
 
 module.exports = router;

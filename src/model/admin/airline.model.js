@@ -17,8 +17,9 @@ const airlineModel = {
     return pool.query(`SELECT * FROM airlines WHERE airline_id = '${id}'`);
   },
 
-  updateAirline: (id, name) => {
-    return pool.query("UPDATE airlines SET name = $1 WHERE airline_id = $2", [
+  updateAirline: (id, logo, name) => {
+    return pool.query("UPDATE airlines SET logo = $1, name = $2 WHERE airline_id = $3", [
+      logo,
       name,
       id,
     ]);

@@ -55,12 +55,13 @@ const airlineController = {
   updateAirline: async (req, res, next) => {
     try {
       const { id } = req.params;
+      const logo = req.file.filename;
       const { name } = req.body;
 
       const data = await airlineModel.getAirlineDetail(id);
       const oldName = data.rows[0].name;
 
-      await airlineModel.updateAirline(id, name);
+      await airlineModel.updateAirline(id, logo, name);
 
       return res.json({
         msg: `${oldName} airline updated to ${name}`,

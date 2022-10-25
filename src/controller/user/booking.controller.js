@@ -7,13 +7,10 @@ const bookingController = {
   createBooking: async (req, res, next) => {
     try {
       const id = uuid();
-      const date = new Date();
+      
       const {
         user_id,
         flight_id,
-        cp_name,
-        cp_phone,
-        cp_email,
         passenger_title,
         passenger_name,
         passenger_nationality,
@@ -21,19 +18,19 @@ const bookingController = {
         total,
       } = req.body;
 
+      console.log(typeof travel_insurance);
+      console.log(typeof total);
+      
+
       const bookingData = {
         booking_id: id,
         user_id,
         flight_id,
-        cp_name,
-        cp_phone,
-        cp_email,
         passenger_title,
         passenger_name,
         passenger_nationality,
         travel_insurance,
         total,
-        created_at: date,
       };
 
       console.log(bookingData);
