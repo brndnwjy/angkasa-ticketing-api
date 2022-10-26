@@ -1,6 +1,5 @@
 const { success, failed } = require("../../helper/response.helper");
 const flightModel = require("../../model/user/flight.model");
-const { v4: uuid } = require("uuid");
 
 const flightModelController = {
   getFlight: (req, res) => {
@@ -71,85 +70,6 @@ const flightModelController = {
       })
       .catch((err) => {
         failed(res, err.message, "failed", "internal server error");
-      });
-  },
-
-  insertFlight: (req, res) => {
-    const id = uuid();
-
-    const data = {
-      id,
-      arrival_country: req.body.arrival_country,
-      arrival_city: req.body.arrival_city,
-      departure_country: req.body.departure_country,
-      departure_city: req.body.departure_city,
-      arrival_time: req.body.arrival_time,
-      departure_time: req.body.departure_time,
-      price: req.body.price,
-      terminal: req.body.terminal,
-      gate: req.body.gate,
-      transit: req.body.transit,
-      wifi: req.body.wifi,
-      luggage: req.body.luggage,
-      lunch: req.body.lunch,
-    };
-
-    flightModel
-      .insertFlight(data)
-      .then(() => {
-        success(res, data, "flight data has been entered");
-      })
-      .catch((err) => {
-        failed(res, err.message, "failed", "internal server error");
-      });
-  },
-
-  updateFlight: (req, res) => {
-    const id = req.params.id;
-    const date = new Date();
-
-    const data = {
-      id,
-      date,
-      arrival_country: req.body.arrival_country,
-      arrival_city: req.body.arrival_city,
-      departure_country: req.body.departure_country,
-      departure_city: req.body.departure_city,
-      arrival_time: req.body.arrival_time,
-      departure_time: req.body.departure_time,
-      price: req.body.price,
-      terminal: req.body.terminal,
-      gate: req.body.gate,
-      transit: req.body.transit,
-      wifi: req.body.wifi,
-      luggage: req.body.luggage,
-      lunch: req.body.lunch,
-      airline_id: req.body.airline_id
-    };
-
-    flightModel
-      .updateFlight(data)
-      .then(async () => {
-        const result = await flightModel.getFlightDetail(id);
-        success(res, result.rows[0], "success", "data has been update");
-      })
-      .catch((err) => {
-        failed(res, err.message, "failed", "internal server error");
-      });
-  },
-
-  deleteFlight: async (req, res) => {
-    const id = req.params.id;
-
-    const data = await flightModel.getFlightDetail(id);
-
-    flightModel
-      .deleteFlight(id)
-      .then(() => {
-        success(res, data.rows[0], "data has been deleted");
-      })
-      .catch((err) => {
-        res.json(err);
       });
   },
 };

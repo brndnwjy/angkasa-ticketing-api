@@ -1,10 +1,18 @@
 const express = require("express");
 const router = express.Router();
 
-// router
-// .get()
-// .post()
-// .put()
-// .delete()
+const {
+  getFlight,
+  getFlightDetail,
+  insertFlight,
+  updateFlight,
+  deleteFlight,
+} = require("../../controller/admin/flight.controller");
 
+router
+  .get("/", getFlight)
+  .get("/:id", getFlightDetail)
+  .post("/", insertFlight)
+  .put("/:id", updateFlight)
+  .delete("/:id", deleteFlight);
 module.exports = router;

@@ -20,11 +20,6 @@ const bookingModel = {
     );
   },
 
-  getBooking: () => {
-    return pool.query(`SELECT bookings.*, flights.*, airlines.* FROM bookings 
-    JOIN (flights join airlines using (airline_id)) using (flight_id)`);
-  },
-
   getMyBooking: (id) => {
     return pool.query(`
     SELECT bookings.*, flights.*, airlines.*, users.* FROM bookings 
@@ -38,13 +33,6 @@ const bookingModel = {
     JOIN (flights join airlines using (airline_id)) using (flight_id)
     JOIN users using (user_id) WHERE booking_id = '${id}'
     `);
-  },
-
-  updateBooking: (id, date) => {
-    return pool.query(
-      "UPDATE bookings SET payment_status = true, updated_at = $1 WHERE booking_id = $2",
-      [date, id]
-    );
   },
 
   cancelBooking: (id) => {

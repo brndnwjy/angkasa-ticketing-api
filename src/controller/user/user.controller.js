@@ -55,14 +55,13 @@ const userController = {
             .compare(password, result.rows[0].password)
             .then(async (result) => {
               if (result) {
-
                 const token = await jwtToken({
                   id: user.user_id,
                   email: user.email,
                 });
-                
+
                 delete user.password;
-                
+
                 succesWithToken(
                   res,
                   { token, data: user },
@@ -81,18 +80,6 @@ const userController = {
       })
       .catch((err) => {
         failed(res, err, "failed", "internal server error");
-      });
-  },
-
-  getUser: (req, res) => {
-    userModel
-      .getUser()
-      .then((result) => {
-        success(res, result.rows, "success", "get all user succes");
-      })
-      .catch((err) => {
-        // res.json(err)
-        failed(res, err.message, "failed", "get all user failed");
       });
   },
 
@@ -116,7 +103,7 @@ const userController = {
     let avatar;
 
     if (req.file) {
-      avatar = req.file.filename;
+      avatar = `http://${req.get("host")}/ava/${req.file.filename}`;
     }
 
     const data = {

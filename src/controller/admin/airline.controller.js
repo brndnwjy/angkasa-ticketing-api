@@ -9,7 +9,11 @@ const airlineController = {
     try {
       const id = uuid();
       const { name } = req.body;
-      const logo = req.file.filename;
+      let logo;
+
+      if (req.file) {
+        logo = `http://${req.get("host")}/logo/${req.file.filename}`;
+      }
 
       await airlineModel.insertAirline(id, logo, name);
 
@@ -82,7 +86,6 @@ const airlineController = {
       await airlineModel.removeAirline(id);
 
       success(res, data.rows[0], "success", `${name} deleted`);
-
     } catch (error) {
       console.log(error);
       next(new createError.InternalServerError());

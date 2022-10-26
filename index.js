@@ -30,7 +30,8 @@ app.use(
 
 app.use("/v1", main);
 
-app.use("/img", express.static(path.join(__dirname, "/upload")));
+app.use("/logo", express.static(path.join(__dirname, "/public/airlines_logo")));
+app.use("/avatar", express.static(path.join(__dirname, "/public")));
 
 app.all("*", (req, res, next) => {
   next(new createError.NotFound());
@@ -41,7 +42,7 @@ app.use((err, req, res) => {
   const code = err.status || 500;
 
   res.status(code).json({
-    message: msg
+    message: msg,
   });
 });
 

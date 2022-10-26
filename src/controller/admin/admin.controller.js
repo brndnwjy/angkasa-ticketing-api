@@ -1,8 +1,10 @@
 const createError = require("http-errors");
 const { v4: uuid } = require("uuid");
 const { hash, compare } = require("bcryptjs");
+const jwtToken = require("../../helper/auth.helper");
 
 const adminModel = require("../../model/admin/admin.model");
+const { succesWithToken } = require("../../helper/response.helper");
 
 const adminController = {
   register: async (req, res, next) => {
@@ -34,10 +36,20 @@ const adminController = {
       const valid = await compare(password, savedPassword);
       console.log(valid);
 
+      const token = await jwtToken({
+        id: data.rows[0].admin_id,
+        email: data.rows[0].email,
+      });
+
+      delete data.rows[0].password;
+
       if (valid) {
-        return res.json({
-          msg: `welcome, ${data.rows[0].username}`,
-        });
+        succesWithToken(
+          res,
+          { token, data: data.rows[0] },
+          "success",
+          "login success"
+        );
       }
 
       return res.json({
