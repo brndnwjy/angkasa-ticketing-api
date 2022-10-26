@@ -13,6 +13,7 @@ const main = require("./src/router/index.routes");
 const app = express();
 const PORT = process.env.PORT || 4000;
 
+app.use(express.static("public"));
 app.use(cors());
 app.use(
   helmet({
