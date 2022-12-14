@@ -1,0 +1,731 @@
+{
+	"info": {
+		"_postman_id": "d77dc873-8d7f-4cfa-b95a-e8eae788be84",
+		"name": "angkasa_deploy_full tested",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "User login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"bambang@mail.com\",\r\n    \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/v1/user/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n            \"username\": \"bambang\",\r\n            \"email\": \"bambang@mail.com\",\r\n            \"phone\": \"02190\",\r\n            \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/v1/user/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "User Lists",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://dead-rose-train.cyclic.app/v1/user/users/list",
+							"protocol": "https",
+							"host": [
+								"dead-rose-train",
+								"cyclic",
+								"app"
+							],
+							"path": [
+								"v1",
+								"user",
+								"users",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Detail By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/v1/user/8c1ea597-1a48-46dd-a381-e79e8d131cce",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"user",
+								"8c1ea597-1a48-46dd-a381-e79e8d131cce"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Update without image  by id",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"username\": \"susanti aja\",\r\n        \"email\": \"susanti@mail.co.id\",\r\n        \"phone\": \"02191\",\r\n        \"city\": \"bandung\",\r\n        \"address\": \"JL Medan Merdeka\",\r\n        \"postcode\": \"54321\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/v1/user/update/8c1ea597-1a48-46dd-a381-e79e8d131cce",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"user",
+								"update",
+								"8c1ea597-1a48-46dd-a381-e79e8d131cce"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User update with image by id",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": "/C:/Users/user/Downloads/sample-ava/michael-dam-mEZ3PoFGs_k-unsplash.jpg"
+								},
+								{
+									"key": "username",
+									"value": "susanti",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": "bambang@mail.com",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "phone",
+									"value": "02190",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "city",
+									"value": "bekasi",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "address",
+									"value": "JL Rambutan",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "postcode",
+									"value": "12345",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:5000/v1/user/update/8c1ea597-1a48-46dd-a381-e79e8d131cce",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"user",
+								"update",
+								"8c1ea597-1a48-46dd-a381-e79e8d131cce"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/v1/user/delete/8b65d7af-91c2-478f-8655-ddaabeb3fa80",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"user",
+								"delete",
+								"8b65d7af-91c2-478f-8655-ddaabeb3fa80"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "airlines",
+			"item": [
+				{
+					"name": "Airlines list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/v1/admin/airline/",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"admin",
+								"airline",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Airlines create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "logo",
+									"type": "file",
+									"src": "/C:/Users/user/Downloads/maskapai pict/citylink.png"
+								},
+								{
+									"key": "name",
+									"value": "Citylink",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:5000/v1/admin/airline/",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"admin",
+								"airline",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Airlines update with image",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "logo",
+									"type": "file",
+									"src": "/C:/Users/user/Downloads/maskapai pict/garuda.jpg",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "Garuda Rosta",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:5000/v1/admin/airline/cb321f1c-7f85-4b40-8f35-8829db0bc702",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"admin",
+								"airline",
+								"cb321f1c-7f85-4b40-8f35-8829db0bc702"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Airlines detail by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/v1/admin/airline/d566646b-7e96-4de3-95cc-16c9eeada241",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"admin",
+								"airline",
+								"d566646b-7e96-4de3-95cc-16c9eeada241"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Airlines delete by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/v1/admin/airline/d3c36c22-e3a1-4ab4-8c26-a3ad1fa3e4cf",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"admin",
+								"airline",
+								"d3c36c22-e3a1-4ab4-8c26-a3ad1fa3e4cf"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Airlines update without image",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:5000/v1/admin/airline/cb321f1c-7f85-4b40-8f35-8829db0bc702",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"admin",
+								"airline",
+								"cb321f1c-7f85-4b40-8f35-8829db0bc702"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "flights",
+			"item": [
+				{
+					"name": "Flight list all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/v1/admin/flight/",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"admin",
+								"flight",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Flight Insert",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n            \"arrival_country\": \"IND\",\r\n            \"arrival_city\": \"Jakarta\",\r\n            \"departure_country\": \"IND\",\r\n            \"departure_city\": \"Surabaya\",\r\n            \"arrival_time\": 1,\r\n            \"departure_time\": 1,\r\n            \"price\": 750000,\r\n            \"airline_id\": \"95706ab6-cc47-462c-9110-d0b8cfe81507\",\r\n            \"terminal\": \"4\",\r\n            \"gate\": \"B\",\r\n            \"transit\": 0,\r\n            \"facilities\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/v1/admin/flight/",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"admin",
+								"flight",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Flight Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n            \"arrival_country\": \"IND\",\r\n            \"arrival_city\": \"Jakarta\",\r\n            \"departure_country\": \"SGP\",\r\n            \"departure_city\": \"Singapura\",\r\n            \"arrival_time\": 2,\r\n            \"departure_time\": 3,\r\n            \"price\": 850000,\r\n            \"airline_id\": \"95706ab6-cc47-462c-9110-d0b8cfe81507\",\r\n            \"terminal\": \"3\",\r\n            \"gate\": \"C\",\r\n            \"transit\": 0,\r\n            \"facilities\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/v1/admin/flight/e4fad48b-a93a-466e-b777-9a97ffdd438a",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"admin",
+								"flight",
+								"e4fad48b-a93a-466e-b777-9a97ffdd438a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Flight Delete Copy",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/v1/admin/flight/a41bfa89-7783-4ac0-be6d-def6cd335253",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"admin",
+								"flight",
+								"a41bfa89-7783-4ac0-be6d-def6cd335253"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Flight getWithFilter",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/v1/admin/flight/filter/search?arrival_city=jakarta&departure_city=surabaya&transit=0&facilities=0&departure_time=1&arrival_time=1&sortby=asc",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"admin",
+								"flight",
+								"filter",
+								"search"
+							],
+							"query": [
+								{
+									"key": "arrival_city",
+									"value": "jakarta"
+								},
+								{
+									"key": "departure_city",
+									"value": "surabaya"
+								},
+								{
+									"key": "transit",
+									"value": "0"
+								},
+								{
+									"key": "facilities",
+									"value": "0"
+								},
+								{
+									"key": "departure_time",
+									"value": "1"
+								},
+								{
+									"key": "arrival_time",
+									"value": "1"
+								},
+								{
+									"key": "sortby",
+									"value": "asc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Flight detail by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/v1/admin/flight/e4fad48b-a93a-466e-b777-9a97ffdd438a",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"admin",
+								"flight",
+								"e4fad48b-a93a-466e-b777-9a97ffdd438a"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "bookings",
+			"item": [
+				{
+					"name": "booking lists",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/v1/admin/booking/",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"admin",
+								"booking",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "booking detail by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/v1/admin/booking/7f881a3f-e8c9-43ef-9a39-32fbee17b19c",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"admin",
+								"booking",
+								"7f881a3f-e8c9-43ef-9a39-32fbee17b19c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "booking create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\": \"060b176d-f469-435c-80f2-4a4935fc5171\",\r\n    \"flight_id\": \"e302a541-26ff-4462-acc7-94037d6940a5\",\r\n    \"airline_id\": \"95706ab6-cc47-462c-9110-d0b8cfe81507\",\r\n    \"psg_title\": \"Mr Bambang\",\r\n    \"psg_name\": \"Bambang Wijaya\",\r\n    \"psg_nationality\": \"Indonesia\",\r\n    \"travel_insurance\": true,\r\n    \"payment_status\": false,\r\n    \"total\": 800000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/v1/booking/",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"booking",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "booking update payment = true",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:5000/v1/admin/booking/7f881a3f-e8c9-43ef-9a39-32fbee17b19c",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"admin",
+								"booking",
+								"7f881a3f-e8c9-43ef-9a39-32fbee17b19c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "booking delete by id (cancel booking)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/v1/admin/booking/db321f1c-7f85-4b40-8f35-8829db0bc701",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"admin",
+								"booking",
+								"db321f1c-7f85-4b40-8f35-8829db0bc701"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "test deploy",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://dead-rose-train.cyclic.app/v1/admin/airline/",
+					"protocol": "https",
+					"host": [
+						"dead-rose-train",
+						"cyclic",
+						"app"
+					],
+					"path": [
+						"v1",
+						"admin",
+						"airline",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
